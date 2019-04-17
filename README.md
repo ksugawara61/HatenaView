@@ -67,6 +67,8 @@ Hatenaの記事フィード用アプリ
 本プロジェクトではMVVMフレームワークを採用して開発することとした。
 下の図に表す通り、アプリケーションの構成をView / ViewModel / Modelに分離する構成としている。
 
+![](./doc/img/framework.png?raw=true)
+
 #### View
 
 Viewは以下の処理を行うこととする。
