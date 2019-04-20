@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="layout_padding_mini">4dp</dimen>
+    <dimen name="layout_padding_short">8dp</dimen>
+    <dimen name="layout_padding_middle">12dp</dimen>
+    <dimen name="layout_padding_long">16dp</dimen>
+
+    <dimen name="layout_margin_mini">4dp</dimen>
+    <dimen name="layout_margin_short">8dp</dimen>
+    <dimen name="layout_margin_middle">12dp</dimen>
+    <dimen name="layout_margin_long">16dp</dimen>
+</resources>
