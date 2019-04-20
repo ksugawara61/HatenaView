@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:foreground="?attr/selectableItemBackground">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/thumbnail"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="@dimen/layout_margin_middle"
+                android:src="@drawable/thumbnaiul_no_image"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
+                app:riv_corner_radius="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+                android:id="@+id/users"
+                android:text="483 user"
+                android:padding="@dimen/layout_padding_short"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/thumbnail"/>
+
+        <TextView
+                android:id="@+id/title"
+                android:text="テストテストテストテストテストテストテストテストテストテストテストテストテストテストテストテストテストテストテスト"
+                android:textColor="@android:color/white"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="#11000000"
+                android:padding="@dimen/layout_padding_short"
+                android:singleLine="true"
+                android:ellipsize="end"
+                app:layout_constraintStart_toEndOf="@id/thumbnail"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/users"/>
+
+        <include
+                android:id="@+id/genre"
+                layout="@layout/tag_item"
+                app:layout_constraintTop_toBottomOf="@id/title"
+                app:layout_constraintStart_toEndOf="@id/thumbnail"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+                android:id="@+id/publishedAt"
+                android:text="2019/04/20 00:05"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/layout_padding_mini"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title"/>
+
+        <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/tagList"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:flexWrap="wrap"
+                app:alignItems="flex_start"
+                app:alignContent="flex_start"
+                app:layout_constraintTop_toBottomOf="@id/publishedAt"
+                app:layout_constraintStart_toEndOf="@id/thumbnail"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>
