@@ -1,5 +1,6 @@
-package net.k2o_info.hatenaview.viewmodel.activity
+package net.k2o_info.hatenaview.view.activity
 
+import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -7,7 +8,9 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import net.k2o_info.hatenaview.databinding.ActivityMainBinding
 import net.k2o_info.hatenaview.R
-import net.k2o_info.hatenaview.viewmodel.adapter.ArticleRecyclerAdapter
+import net.k2o_info.hatenaview.view.adapter.ArticleRecyclerAdapter
+import net.k2o_info.hatenaview.viewmodel.ArticleListViewModel
+import timber.log.Timber
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -33,12 +36,18 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = linearLayoutManager
 
         val recyclerAdapter = ArticleRecyclerAdapter(this)
-
-        // TODO: 暫定対処
-        val itemList = ArrayList<String>(Arrays.asList("1", "2", "3", "4", "5"))
-        recyclerAdapter.updateItems(itemList)
-
         recyclerView.adapter = recyclerAdapter
+
+        // ViewModelの設定
+        val viewModel = ViewModelProviders
+            .of(this).get(ArticleListViewModel::class.java)
+        viewModel.getList().observe(this, android.arch.lifecycle.Observer {
+            if (it != null) {
+                Timber.d(it.toString())
+                recyclerAdapter.updateItems(it)
+            }
+        })
+
     }
 
 

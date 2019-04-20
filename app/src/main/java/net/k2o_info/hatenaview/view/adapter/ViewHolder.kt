@@ -1,4 +1,4 @@
-package net.k2o_info.hatenaview.viewmodel.adapter
+package net.k2o_info.hatenaview.view.adapter
 
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding

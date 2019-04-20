@@ -1,15 +1,16 @@
-package net.k2o_info.hatenaview.viewmodel.adapter
+package net.k2o_info.hatenaview.view.adapter
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import net.k2o_info.hatenaview.R
+import net.k2o_info.hatenaview.viewmodel.dto.ArticleDto
 
 class ArticleRecyclerAdapter(context: Context) : RecyclerView.Adapter<ViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
-    private var list: List<String> = emptyList()
+    private var list: List<ArticleDto> = emptyList()
 
     /**
      * 新規ViewHolderが渡されたときに呼ばれる
@@ -54,7 +55,7 @@ class ArticleRecyclerAdapter(context: Context) : RecyclerView.Adapter<ViewHolder
     /**
      * 要素のアップデート
      */
-    fun updateItems(list: List<String>) {
+    fun updateItems(list: List<ArticleDto>) {
         this.list = list
         notifyDataSetChanged()
     }
