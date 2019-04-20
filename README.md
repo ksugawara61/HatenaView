@@ -153,6 +153,14 @@ Modelでは以下の処理を行うこととする。
 
 * API（RSS）から取得する要素を定義したプレインなオブジェクトクラス
 
+## アプリの構成
+
+### 利用するAPI（RSS）
+
+| 機能名 | URL | パラメータ例 |
+| :--- | :--- | :--- |
+| 最新記事API | http://b.hatena.ne.jp/hotentry/{$param}.rss | all,social,etc. |
+| タグ別記事API | http://b.hatena.ne.jp/search/tag?q={$param}&users={$param}&page={$page}&mode=rss| game,etc. |
 
 ## 参考文献
 
