@@ -6,13 +6,12 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.arch.lifecycle.Observer
 import net.k2o_info.hatenaview.databinding.ActivityMainBinding
 import net.k2o_info.hatenaview.R
 import net.k2o_info.hatenaview.view.adapter.ArticleRecyclerAdapter
 import net.k2o_info.hatenaview.viewmodel.ArticleListViewModel
 import timber.log.Timber
-import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * メインアクティビティ
@@ -41,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         // ViewModelの設定
         val viewModel = ViewModelProviders
             .of(this).get(ArticleListViewModel::class.java)
-        viewModel.getList().observe(this, android.arch.lifecycle.Observer {
+        viewModel.getList().observe(this, Observer {
             if (it != null) {
                 Timber.d(it.toString())
                 recyclerAdapter.updateItems(it)

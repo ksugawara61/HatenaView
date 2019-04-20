@@ -4,6 +4,8 @@ import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import net.k2o_info.hatenaview.BR
+import net.k2o_info.hatenaview.Constant
 import net.k2o_info.hatenaview.R
 import net.k2o_info.hatenaview.viewmodel.dto.ArticleDto
 
@@ -13,6 +15,21 @@ class ArticleRecyclerAdapter(context: Context) : RecyclerView.Adapter<ViewHolder
     private var list: List<ArticleDto> = emptyList()
 
     /**
+     * 要素のViewタイプを取得
+     *
+     * @param position 要素番号
+     * @return Viewタイプ
+     */
+    override fun getItemViewType(position: Int): Int {
+        return when(position) {
+            // 記事Topのみ目立つように表示
+            0 -> Constant.VIEW_TYPE_TOP
+
+            else -> Constant.VIEW_TYPE_DEFAULT
+        }
+    }
+
+    /**
      * 新規ViewHolderが渡されたときに呼ばれる
      *
      * @param viewGroup ビューの要素
@@ -20,7 +37,14 @@ class ArticleRecyclerAdapter(context: Context) : RecyclerView.Adapter<ViewHolder
      * @return 新しいViewHolder
      */
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(inflater.inflate(R.layout.adapter_article, viewGroup, false))
+        return when(viewType) {
+            Constant.VIEW_TYPE_TOP -> ViewHolder(inflater.inflate(R.layout.adapter_top_article, viewGroup, false))
+
+            Constant.VIEW_TYPE_DEFAULT -> ViewHolder(inflater.inflate(R.layout.adapter_article, viewGroup, false))
+
+            else -> ViewHolder(inflater.inflate(R.layout.adapter_article, viewGroup, false))
+        }
+
     }
 
     /**
@@ -34,7 +58,7 @@ class ArticleRecyclerAdapter(context: Context) : RecyclerView.Adapter<ViewHolder
 
         if (item != null) {
             // 変数の格納
-            //viewHolder.getBinding().setVariable(BR.photo, item)
+            viewHolder.getBinding().setVariable(BR.article, item)
 
             // タップ時の処理
             viewHolder.getView().setOnClickListener {
