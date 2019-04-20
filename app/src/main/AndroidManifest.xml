@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="net.k2o_info.hatenaview">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
     <application
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
@@ -10,7 +13,7 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:name=".MainApplication">
-        <activity android:name=".viewmodel.activity.MainActivity">
+        <activity android:name="net.k2o_info.hatenaview.view.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <action android:name="android.intent.action.VIEW"/>
