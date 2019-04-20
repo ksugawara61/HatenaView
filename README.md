@@ -92,10 +92,72 @@ Modelでは以下の処理を行うこととする。
 * 外部のAPIと通信をしてデータを取得する
 * DBからデータを取得する
 
+### クラス構造
+
+上記のMVVMフレームワークを基に下記のクラス構造で開発を進める。
+各クラスの役割は以下の通り
+
+![](./doc/img/class_structure.png?raw=true)
+
+#### View
+
+##### XML
+
+* Activity / Fragment / RecyclerViewの要素を描画するためのXMLファイル
+
+##### Activityクラス
+
+* AndroidのActivityを制御する
+
+##### Fragmentクラス
+
+* AndroidのFragmentを制御する
+
+##### Adapterクラス
+
+* AndroidのReclerViewを描画する領域を制御する（データの構造に応じて適切な要素を振り分ける）
+
+#### ViewModel
+
+##### ViewModelクラス
+
+* Activity / Fragmentで制御するXML要素へ描画するデータの管理を行う
+
+##### Translatorクラス
+
+* Model要素から取得したデータをView要素へ表示しやすいようにデータを整形するクラス
+
+##### Dto（Data Transfer Object）クラス
+
+* Translatorクラスを仲介してView要素で描画しやすいようにオブジェクトを整形したオブジェクトクラス
+
+#### Model
+
+##### Repositoryクラス
+
+* DBとAPI（RSS）からデータを取得する処理を制御するクラス
+
+##### Daoインタフェース
+
+* DBに格納されているデータを取得するためのインタフェース
+
+##### Serviceインタフェース
+
+* API（RSS）からデータを取得するためのインタフェース
+
+##### Entityクラス
+
+* DBの要素を定義したオブジェクトクラス
+
+##### Pojo（Plain Old Java Object）クラス
+
+* API（RSS）から取得する要素を定義したプレインなオブジェクトクラス
+
+
 ## 参考文献
 
-* https://qiita.com/Tsutou/items/69a28ebbd69b69e51703
-* https://speakerdeck.com/star_zero/databindingteshi-xian-surumvvm-architecture?slide=13
-* https://qiita.com/rmakiyama/items/779cf6407f70b40e4ee7
-
-* http://y-anz-m.blogspot.com/2018/04/viewpager-fragment-aac-viewmodel.html
+1. アプリのアーキテクチャ ガイド  _  Android Developers, https://developer.android.com/jetpack/docs/guide, Online; accessed 20-April-2019.
+2. Android Architecture Components 初級 （ MVVM + LiveData 編 ） - Qiita, https://qiita.com/Tsutou/items/69a28ebbd69b69e51703, Online; accessed 20-April-2019.
+3. DataBindingで実現するMVVM Architecture - Speaker Deck, https://speakerdeck.com/star_zero/databindingteshi-xian-surumvvm-architecture?slide=13, Online; accessed 20-April-2019.
+4. Android開発でMVVMを採用してみて - Qiita, https://qiita.com/rmakiyama/items/779cf6407f70b40e4ee7, Online; accessed 20-April-2019.
+5. Y.A.M の 雑記帳_ ViewPager + Fragment で AAC の ViewModel を使う, http://y-anz-m.blogspot.com/2018/04/viewpager-fragment-aac-viewmodel.html, Online; accessed 20-April-2019.
