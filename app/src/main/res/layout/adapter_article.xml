@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:bind="http://schemas.android.com/tools">
 
     <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -31,10 +31,8 @@
         <TextView
                 android:id="@+id/title"
                 android:text="テストテストテストテストテストテストテストテストテストテストテストテストテストテストテストテストテストテストテスト"
-                android:textColor="@android:color/white"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="#11000000"
                 android:padding="@dimen/layout_padding_short"
                 android:singleLine="true"
                 android:ellipsize="end"
@@ -45,6 +43,9 @@
         <include
                 android:id="@+id/genre"
                 layout="@layout/tag_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                bind:tag="@{`sample`}"
                 app:layout_constraintTop_toBottomOf="@id/title"
                 app:layout_constraintStart_toEndOf="@id/thumbnail"
                 app:layout_constraintBottom_toBottomOf="parent"/>
@@ -68,6 +69,14 @@
                 app:layout_constraintTop_toBottomOf="@id/publishedAt"
                 app:layout_constraintStart_toEndOf="@id/thumbnail"
                 app:layout_constraintEnd_toEndOf="parent"/>
+
+        <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
     </android.support.constraint.ConstraintLayout>
 
