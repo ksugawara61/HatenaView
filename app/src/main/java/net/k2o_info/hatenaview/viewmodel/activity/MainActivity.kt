@@ -1,7 +1,8 @@
-package net.k2o_info.hatenaview
+package net.k2o_info.hatenaview.viewmodel.activity
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import net.k2o_info.hatenaview.R
 
 class MainActivity : AppCompatActivity() {
 
