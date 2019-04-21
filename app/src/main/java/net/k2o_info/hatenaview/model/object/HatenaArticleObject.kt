@@ -47,8 +47,8 @@ class HatenaArticleObject {
     var bookmarkSiteEntriesListUrl: String? = null
 
     @Path(value = "hatena")
-    @set:Element(name = "imageurl")
-    @get:Element(name = "imageurl")
+    @set:Element(name = "imageurl", required = false)
+    @get:Element(name = "imageurl", required = false)
     var imageUrl: String? = null
 
     @Path(value = "hatena")
