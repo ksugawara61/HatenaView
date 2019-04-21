@@ -15,6 +15,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import net.k2o_info.hatenaview.BR
 import net.k2o_info.hatenaview.Constant
 import net.k2o_info.hatenaview.R
 import net.k2o_info.hatenaview.databinding.FragmentArticleListBinding
@@ -109,11 +110,17 @@ class ArticleListFragment : Fragment(), ArticleRecyclerAdapter.ArticleRecyclerLi
             viewModel.refreshList()
         }
 
+        viewModel.subscribeStatus().observe(this, Observer {
+            if (it != null) {
+                binding.setVariable(BR.status, it)
+            }
+            swipeRefreshLayout.isRefreshing = false
+        })
+
         viewModel.subscribeList(this).observe(this, Observer {
             if (it != null) {
                 recyclerAdapter.updateItems(it)
             }
-            swipeRefreshLayout.isRefreshing = false
         })
     }
 
