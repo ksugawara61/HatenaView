@@ -3,13 +3,18 @@ package net.k2o_info.hatenaview.view.adapter
 import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import net.k2o_info.hatenaview.BR
 import net.k2o_info.hatenaview.Constant
 import net.k2o_info.hatenaview.R
 import net.k2o_info.hatenaview.viewmodel.dto.ArticleDto
 
-class ArticleRecyclerAdapter(context: Context) : RecyclerView.Adapter<ViewHolder>() {
+class ArticleRecyclerAdapter(context: Context, val listener: ArticleRecyclerListener) : RecyclerView.Adapter<ViewHolder>() {
+
+    interface ArticleRecyclerListener {
+        fun onClickedListener(view: View, article: ArticleDto, position: Int)
+    }
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var list: List<ArticleDto> = emptyList()
@@ -62,7 +67,7 @@ class ArticleRecyclerAdapter(context: Context) : RecyclerView.Adapter<ViewHolder
 
             // タップ時の処理
             viewHolder.getView().setOnClickListener {
-                //listener.onClickedListener(it, item, position)
+                listener.onClickedListener(it, item, position)
             }
         }
     }

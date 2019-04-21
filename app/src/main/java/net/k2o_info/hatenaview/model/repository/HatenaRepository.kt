@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit
  * @author katsuya
  * @since 1.0.0
  */
-object HatenaRepository  {
+class HatenaRepository  {
 
     private val service: HatenaArticleService
     private val hatenaRssObject: MutableLiveData<HatenaRssObject> = MutableLiveData()

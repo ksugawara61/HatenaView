@@ -1,4 +1,4 @@
-package net.k2o_info.hatenaview.viewmodel
+package net.k2o_info.hatenaview.viewmodel.fragment
 
 import android.app.Application
 import android.arch.lifecycle.*
@@ -6,7 +6,6 @@ import android.arch.lifecycle.Observer
 import net.k2o_info.hatenaview.Constant
 import net.k2o_info.hatenaview.model.repository.HatenaRepository
 import net.k2o_info.hatenaview.viewmodel.dto.ArticleDto
-import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -36,11 +35,11 @@ class ArticleListViewModel(application: Application, private val repository: Hat
                         type = type,
                         title = hatenaArticle.title ?: continue,
                         link = hatenaArticle.link ?: continue,
-                        description = hatenaArticle.description ?: continue,
-                        imageUrl = hatenaArticle.imageUrl ?: continue,
-                        users = hatenaArticle.bookmarkCount ?: continue,
+                        description = hatenaArticle.description ?: "",
+                        imageUrl = hatenaArticle.imageUrl ?: "",
+                        users = hatenaArticle.bookmarkCount ?: 0,
                         publishedAt = dateFormat.parse(hatenaArticle.date),
-                        tagList = hatenaArticle.subjectList ?: continue
+                        tagList = hatenaArticle.subjectList ?: emptyList()
                     )
                     articleDtoList.add(articleDto)
                 }

@@ -4,16 +4,20 @@ import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.arch.lifecycle.Observer
-import android.support.v4.widget.SwipeRefreshLayout
 import net.k2o_info.hatenaview.databinding.ActivityMainBinding
 import net.k2o_info.hatenaview.R
-import net.k2o_info.hatenaview.model.repository.HatenaRepository
-import net.k2o_info.hatenaview.view.adapter.ArticleRecyclerAdapter
-import net.k2o_info.hatenaview.viewmodel.ArticleListViewModel
+import android.support.design.widget.TabLayout
+import android.support.v4.view.ViewPager
+import android.arch.lifecycle.Observer
+import net.k2o_info.hatenaview.MainApplication
+import net.k2o_info.hatenaview.model.repository.CategoryRepository
+import net.k2o_info.hatenaview.view.adapter.ArticleListPagerAdapter
+import net.k2o_info.hatenaview.viewmodel.activity.MainViewModel
 import timber.log.Timber
+import android.support.v4.view.ViewPager.OnPageChangeListener
+
+
+
 
 /**
  * メインアクティビティ
@@ -30,35 +34,43 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
         val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        val recyclerView: RecyclerView = binding.recyclerView
-        val linearLayoutManager = LinearLayoutManager(this)
-        recyclerView.layoutManager = linearLayoutManager
 
-        val recyclerAdapter = ArticleRecyclerAdapter(this)
-        recyclerView.adapter = recyclerAdapter
+        // ViewPagerの設定
+        val viewPager: ViewPager = binding.viewPager
+
+        // Tab Layoutの設定
+        val tabLayout: TabLayout = binding.tabLayout
+        tabLayout.setupWithViewPager(viewPager)
+
+        val fragmentManager = supportFragmentManager
 
         // ViewModelの設定
         val viewModel = ViewModelProviders
-            .of(this, ArticleListViewModel.ArticleListFactory(this.application, HatenaRepository, "all"))
-            .get(ArticleListViewModel::class.java)
-
-        // リフレッシュ処理
-        val swipeRefreshLayout: SwipeRefreshLayout = binding.swipeContainer
-        swipeRefreshLayout.setOnRefreshListener {
-            viewModel.refreshList()
-        }
+            .of(this, MainViewModel.MainFactory(this.application, CategoryRepository(MainApplication.database)))
+            .get(MainViewModel::class.java)
 
         viewModel.subscribeList(this).observe(this, Observer {
-            if (it != null) {
-                Timber.d(it.toString())
-                recyclerAdapter.updateItems(it)
+            if (it != null && it.isNotEmpty()) {
+                viewPager.adapter = ArticleListPagerAdapter(fragmentManager, it)
+                viewPager.currentItem = viewModel.getSelectedTabPosition()
             }
-            swipeRefreshLayout.isRefreshing = false
         })
 
-    }
+        viewPager.addOnPageChangeListener(object : OnPageChangeListener {
+            override fun onPageSelected(position: Int) {
+                Timber.d("onPageSelected: ${position}")
+                viewModel.setSelectedTabPosition(position)
+            }
 
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                Timber.d("onPageScrolled")
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {
+                Timber.d("onPageScrollStateChanged")
+            }
+        })
+    }
 
 }

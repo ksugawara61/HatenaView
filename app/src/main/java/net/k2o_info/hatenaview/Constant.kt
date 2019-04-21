@@ -12,6 +12,10 @@ object Constant {
 
     const val VIEW_TYPE_DEFAULT = 1
 
+    const val APP_DABASE_NAME = "hatenaview_db"
+
+    const val KEY_CATEGORY_QUERY = "categoryQuery"
+
     const val OKHTTP_TIMEOUT: Long = 10
 
     const val HATENA_BASE_URL = "http://b.hatena.ne.jp"
