@@ -39,7 +39,7 @@ class HatenaArticleObject {
     @Path(value = "hatena")
     @set:Element(name = "bookmarkcount")
     @get:Element(name = "bookmarkcount")
-    var bookmarkCount: Int = 0
+    var bookmarkCount: Int? = null
 
     @Path(value = "hatena")
     @set:Element(name = "bookmarkSiteEntriesListUrl")
