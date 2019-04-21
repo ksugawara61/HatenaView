@@ -25,7 +25,7 @@ class ArticleListViewModel(application: Application, private val repository: Hat
             if (it != null) {
                 val articleDtoList: MutableList<ArticleDto> = mutableListOf()
                 val hatenaArticleObjectList = it.itemList ?: emptyList()
-                val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.JAPAN)
                 for ((index, hatenaArticle) in hatenaArticleObjectList.withIndex()) {
                     var type = Constant.VIEW_TYPE_DEFAULT
                     if (index == 0) {
