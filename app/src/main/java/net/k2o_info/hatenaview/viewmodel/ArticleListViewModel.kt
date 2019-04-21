@@ -4,6 +4,7 @@ import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import net.k2o_info.hatenaview.model.repository.HatenaRepository
 import net.k2o_info.hatenaview.viewmodel.dto.ArticleDto
 import java.util.*
 import kotlin.collections.ArrayList
@@ -16,6 +17,10 @@ class ArticleListViewModel(application: Application) : AndroidViewModel(applicat
      * コンストラクタ
      */
     init {
+        // TODO: Repositoryを依存性がない状態で取得する
+        val repository = HatenaRepository()
+        repository.getHotentryArticle("all")
+
         // TODO Repositoryから取得したデータを変換する処理を実装する
         val dto1 = ArticleDto(
             1,
