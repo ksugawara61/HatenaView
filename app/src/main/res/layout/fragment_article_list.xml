@@ -13,6 +13,7 @@
                 android:id="@+id/swipe_container"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                app:refreshing="@{true}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -20,10 +21,18 @@
 
             <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycler_view"
+                    android:visibility="visible"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     tools:listitem="@layout/adapter_article"
                     app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
+            <include
+                    android:id="@+id/error_message"
+                    layout="@layout/error_item"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
 
         </android.support.v4.widget.SwipeRefreshLayout>
 

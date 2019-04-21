@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">HatenaView</string>
+    <string name="error_message">通信エラーが発生しました。\n下にスワイプしてください</string>
 </resources>
