@@ -1,4 +1,4 @@
-package net.k2o_info.hatenaview.viewmodel
+package net.k2o_info.hatenaview.viewmodel.fragment
 
 import android.app.Application
 import android.arch.lifecycle.*
@@ -6,7 +6,6 @@ import android.arch.lifecycle.Observer
 import net.k2o_info.hatenaview.Constant
 import net.k2o_info.hatenaview.model.repository.HatenaRepository
 import net.k2o_info.hatenaview.viewmodel.dto.ArticleDto
-import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 

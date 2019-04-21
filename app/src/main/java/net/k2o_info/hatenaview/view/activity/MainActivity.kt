@@ -1,19 +1,16 @@
 package net.k2o_info.hatenaview.view.activity
 
-import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.arch.lifecycle.Observer
-import android.support.v4.widget.SwipeRefreshLayout
 import net.k2o_info.hatenaview.databinding.ActivityMainBinding
 import net.k2o_info.hatenaview.R
-import net.k2o_info.hatenaview.model.repository.HatenaRepository
-import net.k2o_info.hatenaview.view.adapter.ArticleRecyclerAdapter
-import net.k2o_info.hatenaview.viewmodel.ArticleListViewModel
-import timber.log.Timber
+import android.support.design.widget.TabLayout
+import android.support.v4.view.ViewPager
+import net.k2o_info.hatenaview.view.adapter.ArticleListPagerAdapter
+import java.util.*
+import kotlin.collections.ArrayList
+
 
 /**
  * メインアクティビティ
@@ -30,35 +27,19 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
         val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        val recyclerView: RecyclerView = binding.recyclerView
-        val linearLayoutManager = LinearLayoutManager(this)
-        recyclerView.layoutManager = linearLayoutManager
 
-        val recyclerAdapter = ArticleRecyclerAdapter(this)
-        recyclerView.adapter = recyclerAdapter
+        // ViewPagerの設定
+        val viewPager: ViewPager = binding.viewPager
 
-        // ViewModelの設定
-        val viewModel = ViewModelProviders
-            .of(this, ArticleListViewModel.ArticleListFactory(this.application, HatenaRepository, "all"))
-            .get(ArticleListViewModel::class.java)
+        // Tab Layoutの設定
+        val tabLayout: TabLayout = binding.tabLayout
+        tabLayout.setupWithViewPager(viewPager)
 
-        // リフレッシュ処理
-        val swipeRefreshLayout: SwipeRefreshLayout = binding.swipeContainer
-        swipeRefreshLayout.setOnRefreshListener {
-            viewModel.refreshList()
-        }
-
-        viewModel.subscribeList(this).observe(this, Observer {
-            if (it != null) {
-                Timber.d(it.toString())
-                recyclerAdapter.updateItems(it)
-            }
-            swipeRefreshLayout.isRefreshing = false
-        })
-
+        // TODO: タイトルリストの取得処理を制御
+        val categoryList = ArrayList<String>(Arrays.asList("all", "general", "social", "economics", "life", "knowledge", "it", "fun", "entertainment", "game"))
+        val fragmentManager = supportFragmentManager
+        viewPager.adapter = ArticleListPagerAdapter(fragmentManager, categoryList)
     }
-
 
 }
