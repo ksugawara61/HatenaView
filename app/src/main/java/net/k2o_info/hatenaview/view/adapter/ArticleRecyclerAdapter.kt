@@ -21,9 +21,9 @@ class ArticleRecyclerAdapter(context: Context) : RecyclerView.Adapter<ViewHolder
      * @return Viewタイプ
      */
     override fun getItemViewType(position: Int): Int {
-        return when(position) {
+        return when(list.get(position).type) {
             // 記事Topのみ目立つように表示
-            0 -> Constant.VIEW_TYPE_TOP
+            Constant.VIEW_TYPE_TOP -> Constant.VIEW_TYPE_TOP
 
             else -> Constant.VIEW_TYPE_DEFAULT
         }

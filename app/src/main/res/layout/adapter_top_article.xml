@@ -29,17 +29,6 @@
                 app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
-                android:id="@+id/users"
-                android:text="@{String.valueOf(article.users) + ` user`}"
-                android:textColor="@android:color/white"
-                android:background="#55000000"
-                android:padding="@dimen/layout_padding_short"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
-
-        <TextView
                 android:text="@{article.title}"
                 android:textColor="@android:color/white"
                 android:layout_width="0dp"
@@ -52,14 +41,15 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="@id/thumbnail"/>
 
-        <include
-                android:id="@+id/category"
-                layout="@layout/tag_item"
+        <TextView
+                android:id="@+id/users"
+                android:text="@{String.valueOf(article.users) + ` user`}"
+                android:padding="@dimen/layout_padding_short"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                bind:tag="@{article.category}"
                 app:layout_constraintTop_toBottomOf="@id/thumbnail"
                 app:layout_constraintStart_toStartOf="parent"/>
+
 
         <TextView
                 android:id="@+id/publishedAt"
@@ -69,7 +59,7 @@
                 app:publishedAt="@{article.publishedAt}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/thumbnail"
-                app:layout_constraintBottom_toBottomOf="@id/category"
+                app:layout_constraintBottom_toBottomOf="@id/users"
                 tools:text="5時間前"/>
 
         <com.google.android.flexbox.FlexboxLayout
@@ -80,7 +70,7 @@
                 app:alignItems="flex_start"
                 app:alignContent="flex_start"
                 app:tagList="@{article.tagList}"
-                app:layout_constraintTop_toBottomOf="@id/category"
+                app:layout_constraintTop_toBottomOf="@id/users"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 

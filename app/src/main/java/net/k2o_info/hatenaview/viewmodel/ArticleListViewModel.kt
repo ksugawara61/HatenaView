@@ -1,63 +1,70 @@
 package net.k2o_info.hatenaview.viewmodel
 
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.*
+import android.arch.lifecycle.Observer
+import net.k2o_info.hatenaview.Constant
+import net.k2o_info.hatenaview.model.repository.HatenaRepository
 import net.k2o_info.hatenaview.viewmodel.dto.ArticleDto
+import timber.log.Timber
+import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
-class ArticleListViewModel(application: Application) : AndroidViewModel(application) {
+class ArticleListViewModel(application: Application, private val repository: HatenaRepository,
+                           private val category: String) : AndroidViewModel(application) {
 
     private val list: MutableLiveData<List<ArticleDto>> = MutableLiveData()
 
     /**
-     * コンストラクタ
-     */
-    init {
-        // TODO Repositoryから取得したデータを変換する処理を実装する
-        val dto1 = ArticleDto(
-            1,
-            "これはテスト1です",
-            "これはテスト1のディスクリプションです",
-            "経済",
-            "https://www.ateam-japan.com/wp-content/uploads/1-16.png",
-            250,
-            Date(),
-            Arrays.asList("吉岡里帆", "注目")
-        )
-        val dto2 = ArticleDto(
-            2,
-            "これはテスト2です",
-            "これはテスト2のディスクリプションです",
-            "政治",
-            "https://eiga.k-img.com/images/person/83068/0f126f330c25f0ee/320.jpg?1478084080",
-            300,
-            Date(),
-            Arrays.asList("新垣結衣", "ドラマ", "最新")
-        )
-        val dto3 = ArticleDto(
-            2,
-            "これはテスト3です",
-            "これはテスト3のディスクリプションです",
-            "スポーツ",
-            "https://eiga.k-img.com/images/person/83068/0f126f330c25f0ee/320.jpg?1478084080",
-            1000,
-            Date(),
-            Arrays.asList("イチロー", "3000本", "MLB")
-        )
-        val dtoList = ArrayList<ArticleDto>(Arrays.asList(dto1, dto2, dto3))
-        list.value = dtoList
-    }
-
-    /**
-     * データリストを返却
+     * データリストをサブスクライブ
      *
      * @return データリスト
      */
-    fun getList(): LiveData<List<ArticleDto>> {
+    fun subscribeList(owner: LifecycleOwner): LiveData<List<ArticleDto>> {
+        repository.getHotentryArticle(category).observe(owner, Observer {
+            if (it != null) {
+                val articleDtoList: MutableList<ArticleDto> = mutableListOf()
+                val hatenaArticleObjectList = it.itemList ?: emptyList()
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.JAPAN)
+                for ((index, hatenaArticle) in hatenaArticleObjectList.withIndex()) {
+                    var type = Constant.VIEW_TYPE_DEFAULT
+                    if (index == 0) {
+                        type = Constant.VIEW_TYPE_TOP
+                    }
+
+                    val articleDto = ArticleDto(
+                        type = type,
+                        title = hatenaArticle.title ?: continue,
+                        link = hatenaArticle.link ?: continue,
+                        description = hatenaArticle.description ?: continue,
+                        imageUrl = hatenaArticle.imageUrl ?: continue,
+                        users = hatenaArticle.bookmarkCount ?: continue,
+                        publishedAt = dateFormat.parse(hatenaArticle.date),
+                        tagList = hatenaArticle.subjectList ?: continue
+                    )
+                    articleDtoList.add(articleDto)
+                }
+                list.postValue(articleDtoList)
+            }
+        })
+
         return list
+    }
+
+    /**
+     * データリストのリフレッシュ処理を行う
+     */
+    fun refreshList() {
+        repository.updateHotentryArticle(category)
+    }
+
+    class ArticleListFactory(private val application: Application, private val repository: HatenaRepository,
+                             private val category: String): ViewModelProvider.NewInstanceFactory() {
+
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            return ArticleListViewModel(application, repository, category) as T
+        }
+
     }
 
 }

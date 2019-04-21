@@ -7,8 +7,10 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.arch.lifecycle.Observer
+import android.support.v4.widget.SwipeRefreshLayout
 import net.k2o_info.hatenaview.databinding.ActivityMainBinding
 import net.k2o_info.hatenaview.R
+import net.k2o_info.hatenaview.model.repository.HatenaRepository
 import net.k2o_info.hatenaview.view.adapter.ArticleRecyclerAdapter
 import net.k2o_info.hatenaview.viewmodel.ArticleListViewModel
 import timber.log.Timber
@@ -39,12 +41,21 @@ class MainActivity : AppCompatActivity() {
 
         // ViewModelの設定
         val viewModel = ViewModelProviders
-            .of(this).get(ArticleListViewModel::class.java)
-        viewModel.getList().observe(this, Observer {
+            .of(this, ArticleListViewModel.ArticleListFactory(this.application, HatenaRepository, "all"))
+            .get(ArticleListViewModel::class.java)
+
+        // リフレッシュ処理
+        val swipeRefreshLayout: SwipeRefreshLayout = binding.swipeContainer
+        swipeRefreshLayout.setOnRefreshListener {
+            viewModel.refreshList()
+        }
+
+        viewModel.subscribeList(this).observe(this, Observer {
             if (it != null) {
                 Timber.d(it.toString())
                 recyclerAdapter.updateItems(it)
             }
+            swipeRefreshLayout.isRefreshing = false
         })
 
     }
