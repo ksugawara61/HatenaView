@@ -2,13 +2,19 @@ package net.k2o_info.hatenaview.view.adapter
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentStatePagerAdapter
 import net.k2o_info.hatenaview.view.fragment.ArticleListFragment
+import net.k2o_info.hatenaview.viewmodel.dto.CategoryDto
 import timber.log.Timber
+import android.support.v4.app.FragmentStatePagerAdapter
 
 
-
-class ArticleListPagerAdapter(fragmentManager: FragmentManager, private val categoryList: List<String>)
+/**
+ * 記事リスト用ページャアダプタ
+ *
+ * @author katsuya
+ * @since 1.0.0
+ */
+class ArticleListPagerAdapter(fragmentManager: FragmentManager, private val categoryList: List<CategoryDto>)
     : FragmentStatePagerAdapter(fragmentManager) {
 
     /**
@@ -19,7 +25,7 @@ class ArticleListPagerAdapter(fragmentManager: FragmentManager, private val cate
      */
     override fun getPageTitle(position: Int): CharSequence? {
         Timber.d("getPageTitle")
-        return categoryList[position]
+        return categoryList[position].categoryName
     }
 
     /**
@@ -39,8 +45,18 @@ class ArticleListPagerAdapter(fragmentManager: FragmentManager, private val cate
      * @return ページのフラグメント
      */
     override fun getItem(position: Int): Fragment {
-        Timber.d("getItem")
-        return ArticleListFragment()
+        Timber.d("getItem: ${position}")
+        return ArticleListFragment.newInstance(categoryList[position].categoryQuery)
+    }
+
+    /**
+     * 要素のポジションの取得
+     *
+     * @param object オブジェクト
+     * @return
+     */
+    override fun getItemPosition(any: Any): Int {
+        return POSITION_NONE
     }
 
 

@@ -35,11 +35,11 @@ class ArticleListViewModel(application: Application, private val repository: Hat
                         type = type,
                         title = hatenaArticle.title ?: continue,
                         link = hatenaArticle.link ?: continue,
-                        description = hatenaArticle.description ?: continue,
-                        imageUrl = hatenaArticle.imageUrl ?: continue,
-                        users = hatenaArticle.bookmarkCount ?: continue,
+                        description = hatenaArticle.description ?: "",
+                        imageUrl = hatenaArticle.imageUrl ?: "",
+                        users = hatenaArticle.bookmarkCount ?: 0,
                         publishedAt = dateFormat.parse(hatenaArticle.date),
-                        tagList = hatenaArticle.subjectList ?: continue
+                        tagList = hatenaArticle.subjectList ?: emptyList()
                     )
                     articleDtoList.add(articleDto)
                 }

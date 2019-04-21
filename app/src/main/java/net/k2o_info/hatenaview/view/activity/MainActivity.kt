@@ -8,6 +8,7 @@ import net.k2o_info.hatenaview.R
 import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
 import net.k2o_info.hatenaview.view.adapter.ArticleListPagerAdapter
+import net.k2o_info.hatenaview.viewmodel.dto.CategoryDto
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -37,7 +38,20 @@ class MainActivity : AppCompatActivity() {
         tabLayout.setupWithViewPager(viewPager)
 
         // TODO: タイトルリストの取得処理を制御
-        val categoryList = ArrayList<String>(Arrays.asList("all", "general", "social", "economics", "life", "knowledge", "it", "fun", "entertainment", "game"))
+        val categoryList = ArrayList<CategoryDto>(
+            Arrays.asList(
+                CategoryDto("総合", "all"),
+                CategoryDto("一般", "general"),
+                CategoryDto("世の中", "social"),
+                CategoryDto("政治と経済", "economics"),
+                CategoryDto("暮らし", "life"),
+                CategoryDto("学び", "knowledge"),
+                CategoryDto("テクノロジー", "it"),
+                CategoryDto("おもしろ", "fun"),
+                CategoryDto("エンタメ", "entertainment"),
+                CategoryDto("アニメとゲーム", "game")
+            )
+        )
         val fragmentManager = supportFragmentManager
         viewPager.adapter = ArticleListPagerAdapter(fragmentManager, categoryList)
     }
