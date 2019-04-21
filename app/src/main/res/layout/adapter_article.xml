@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:bind="http://schemas.android.com/tools"
         xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -17,9 +16,10 @@
 
         <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/thumbnail"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_margin="@dimen/layout_margin_middle"
+                android:layout_width="74dp"
+                android:layout_height="74dp"
+                android:layout_margin="@dimen/layout_margin_short"
+                android:padding="@dimen/layout_padding_mini"
                 android:src="@drawable/thumbnail_no_image"
                 android:scaleType="centerCrop"
                 android:adjustViewBounds="true"
@@ -32,34 +32,52 @@
         <TextView
                 android:id="@+id/title"
                 android:text="@{article.title}"
+                android:textSize="18sp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/layout_padding_mini"
-                android:singleLine="true"
+                android:paddingTop="@dimen/layout_padding_mini"
+                android:paddingBottom="@dimen/layout_padding_mini"
+                android:paddingStart="@dimen/layout_padding_short"
+                android:paddingEnd="@dimen/layout_padding_short"
+                android:maxLines="2"
                 android:ellipsize="end"
                 app:layout_constraintStart_toEndOf="@id/thumbnail"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="サンプルタイトル"/>
 
         <TextView
                 android:id="@+id/users"
                 android:text="@{String.valueOf(article.users) + ` user`}"
-                android:layout_width="wrap_content"
+                android:textSize="14sp"
+                android:drawableStart="@drawable/ic_person_grey_700_24dp"
+                android:drawablePadding="@dimen/layout_padding_mini"
+                android:paddingTop="@dimen/layout_padding_short"
+                android:paddingStart="@dimen/layout_padding_short"
+                android:paddingEnd="@dimen/layout_padding_short"
+                android:paddingBottom="@dimen/layout_padding_mini"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/layout_padding_mini"
                 app:layout_constraintTop_toBottomOf="@id/title"
                 app:layout_constraintStart_toEndOf="@id/thumbnail"
-                app:layout_constraintBottom_toBottomOf="@id/tagList"/>
+                app:layout_constraintEnd_toStartOf="@id/publishedAt"
+                app:layout_constraintBottom_toTopOf="@id/tagList"
+                tools:text="300 user"/>
 
         <TextView
                 android:id="@+id/publishedAt"
+                android:textSize="14sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/layout_padding_mini"
+                android:paddingTop="@dimen/layout_padding_short"
+                android:paddingStart="@dimen/layout_padding_short"
+                android:paddingEnd="@dimen/layout_padding_middle"
+                android:paddingBottom="@dimen/layout_padding_mini"
                 app:publishedAt="@{article.publishedAt}"
+                app:layout_constraintStart_toEndOf="@id/users"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/title"
-                app:layout_constraintBottom_toBottomOf="@id/tagList"
+                app:layout_constraintBottom_toTopOf="@id/tagList"
                 tools:text="5時間前"/>
 
         <com.google.android.flexbox.FlexboxLayout
