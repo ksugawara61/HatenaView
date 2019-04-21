@@ -11,9 +11,8 @@ import java.util.*
 data class ArticleDto constructor(
     var type: Int,
     var title: String,
-    //var link: String,
+    var link: String,
     var description: String,
-    var category: String,
     var imageUrl: String,
     var users: Int,
     var publishedAt: Date,
