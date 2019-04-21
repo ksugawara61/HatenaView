@@ -6,6 +6,7 @@ import android.arch.lifecycle.Observer
 import net.k2o_info.hatenaview.Constant
 import net.k2o_info.hatenaview.model.repository.HatenaRepository
 import net.k2o_info.hatenaview.viewmodel.dto.ArticleDto
+import net.k2o_info.hatenaview.viewmodel.translator.ArticleTranslator
 import timber.log.Timber
 import java.net.UnknownServiceException
 import java.text.SimpleDateFormat
@@ -44,27 +45,8 @@ class ArticleListViewModel(application: Application, private val repository: Hat
     fun subscribeList(owner: LifecycleOwner): LiveData<List<ArticleDto>> {
         repository.getHotentryArticle(category).observe(owner, Observer {
             if (it != null && it.status) {
-                val articleDtoList: MutableList<ArticleDto> = mutableListOf()
                 val hatenaArticleObjectList = it.itemList ?: emptyList()
-                val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.JAPAN)
-                for ((index, hatenaArticle) in hatenaArticleObjectList.withIndex()) {
-                    var type = Constant.VIEW_TYPE_DEFAULT
-                    if (index == 0) {
-                        type = Constant.VIEW_TYPE_TOP
-                    }
-
-                    val articleDto = ArticleDto(
-                        type = type,
-                        title = hatenaArticle.title ?: continue,
-                        link = hatenaArticle.link ?: continue,
-                        description = hatenaArticle.description ?: "",
-                        imageUrl = hatenaArticle.imageUrl ?: "",
-                        users = hatenaArticle.bookmarkCount ?: 0,
-                        publishedAt = dateFormat.parse(hatenaArticle.date),
-                        tagList = hatenaArticle.subjectList ?: emptyList()
-                    )
-                    articleDtoList.add(articleDto)
-                }
+                val articleDtoList = ArticleTranslator.translateHatenaArticleListToArticleList(hatenaArticleObjectList)
                 status.postValue(true)
                 list.postValue(articleDtoList)
             } else {
