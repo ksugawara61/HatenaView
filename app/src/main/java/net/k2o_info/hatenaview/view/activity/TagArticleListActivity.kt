@@ -12,13 +12,15 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.MenuItem
 import android.view.View
 import net.k2o_info.hatenaview.BR
+import net.k2o_info.hatenaview.Constant
 import net.k2o_info.hatenaview.databinding.ActivityTagArticleListBinding
 import net.k2o_info.hatenaview.model.repository.HatenaRepository
 import net.k2o_info.hatenaview.view.adapter.ArticleRecyclerAdapter
+import net.k2o_info.hatenaview.viewmodel.activity.TagArticleListViewModel
 import net.k2o_info.hatenaview.viewmodel.dto.ArticleDto
-import net.k2o_info.hatenaview.viewmodel.fragment.ArticleListViewModel
 
 /**
  * タグ別記事リストアクティビティ
@@ -43,10 +45,20 @@ class TagArticleListActivity : AppCompatActivity(), ArticleRecyclerAdapter.Artic
         val recyclerAdapter = ArticleRecyclerAdapter(this, this)
         recyclerView.adapter = recyclerAdapter
 
+        // Intentから遷移元の変数を取得
+        val tag = intent.getStringExtra(Constant.KEY_TAG_QUERY)
+
+        // ツールバーの戻るボタンを設定
+        val actionBar = supportActionBar
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true)
+            actionBar.title = tag
+        }
+
         // ViewModelの設定
         val viewModel = ViewModelProviders
-            .of(this, ArticleListViewModel.ArticleListFactory(this.application, HatenaRepository(), "all"))
-            .get(ArticleListViewModel::class.java)
+            .of(this, TagArticleListViewModel.TagArticleListFactory(this.application, HatenaRepository(), tag))
+            .get(TagArticleListViewModel::class.java)
 
         // リフレッシュ処理
         val swipeRefreshLayout: SwipeRefreshLayout = binding.swipeContainer
@@ -66,6 +78,26 @@ class TagArticleListActivity : AppCompatActivity(), ArticleRecyclerAdapter.Artic
                 recyclerAdapter.updateItems(it)
             }
         })
+    }
+
+    /**
+     * ツールバーのボタンがタップされた時の動作
+     *
+     * @param item タップされたボタン
+     * @return true
+     */
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+
+        if (item != null) {
+            when (item.itemId) {
+                android.R.id.home -> {
+                    // 戻るボタンタップ時の動作
+                    onBackPressed()
+                }
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     /**

@@ -24,7 +24,8 @@ import java.util.concurrent.TimeUnit
 class HatenaRepository  {
 
     private val service: HatenaArticleService
-    private val hatenaRssObject: MutableLiveData<HatenaRssObject> = MutableLiveData()
+    private val hotentoryHatenaRssObject: MutableLiveData<HatenaRssObject> = MutableLiveData()
+    private val tagHatenaRssObject: MutableLiveData<HatenaRssObject> = MutableLiveData()
 
     /**
      * コンストラクタ
@@ -54,7 +55,7 @@ class HatenaRepository  {
      */
     fun getHotentryArticle(category: String): LiveData<HatenaRssObject> {
         updateHotentryArticle(category)
-        return hatenaRssObject
+        return hotentoryHatenaRssObject
     }
 
     /**
@@ -68,16 +69,53 @@ class HatenaRepository  {
                 if (response.isSuccessful) {
                     val tmpHatenaRssObject = response.body() as HatenaRssObject
                     tmpHatenaRssObject.status = true
-                    hatenaRssObject.postValue(tmpHatenaRssObject)
+                    hotentoryHatenaRssObject.postValue(tmpHatenaRssObject)
                 } else {
                     Timber.e("${response.code()}: response is failure")
-                    hatenaRssObject.postValue(HatenaRssObject())
+                    hotentoryHatenaRssObject.postValue(HatenaRssObject())
                 }
             }
 
             override fun onFailure(call: Call<HatenaRssObject>, t: Throwable) {
                 Timber.e("error: ${t.message}")
-                hatenaRssObject.postValue(HatenaRssObject())
+                hotentoryHatenaRssObject.postValue(HatenaRssObject())
+            }
+        })
+    }
+
+    /**
+     * はてなブックマークのタグ別記事リストを取得
+     *
+     * @param tag タグ名
+     * @param page ページ番号
+     * @return タグ別記事リストのLiveData
+     */
+    fun getTagArticle(category: String, page: Int = 1): LiveData<HatenaRssObject> {
+        updateTagArticle(category, page)
+        return tagHatenaRssObject
+    }
+
+    /**
+     * はてなブックマークのタグ別記事リストを更新
+     *
+     * @param tag タグ名
+     */
+    fun updateTagArticle(tag: String, page: Int = 1) {
+        service.getTagArticle(tag = tag, page = page).enqueue(object : Callback<HatenaRssObject> {
+            override fun onResponse(call: Call<HatenaRssObject>, response: Response<HatenaRssObject>) {
+                if (response.isSuccessful) {
+                    val tmpHatenaRssObject = response.body() as HatenaRssObject
+                    tmpHatenaRssObject.status = true
+                    tagHatenaRssObject.postValue(tmpHatenaRssObject)
+                } else {
+                    Timber.e("${response.code()}: response is failure")
+                    tagHatenaRssObject.postValue(HatenaRssObject())
+                }
+            }
+
+            override fun onFailure(call: Call<HatenaRssObject>, t: Throwable) {
+                Timber.e("error: ${t.message}")
+                tagHatenaRssObject.postValue(HatenaRssObject())
             }
         })
     }
