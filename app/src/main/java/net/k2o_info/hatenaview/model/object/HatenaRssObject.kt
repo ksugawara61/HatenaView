@@ -6,6 +6,8 @@ import org.simpleframework.xml.*
 @Root(name = "RDF", strict = false)
 class HatenaRssObject {
 
+    var status: Boolean = false
+
     @set:ElementList(entry = "item", inline = true)
     @get:ElementList(entry = "item", inline = true)
     var itemList: List<HatenaArticleObject>? = null

@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
+    <data>
+        <import type="android.view.View"/>
+        <variable name="status" type="Boolean"/>
+    </data>
+
     <android.support.constraint.ConstraintLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
@@ -21,20 +26,20 @@
 
             <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycler_view"
-                    android:visibility="visible"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:visibility="@{status ? View.VISIBLE : View.GONE}"
                     tools:listitem="@layout/adapter_article"
                     app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
-            <include
-                    android:id="@+id/error_message"
-                    layout="@layout/error_item"
-                    android:visibility="gone"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-
         </android.support.v4.widget.SwipeRefreshLayout>
+
+        <include
+                android:id="@+id/error_message"
+                layout="@layout/error_item"
+                android:visibility="@{status ? View.GONE : View.VISIBLE}"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
 
     </android.support.constraint.ConstraintLayout>
 

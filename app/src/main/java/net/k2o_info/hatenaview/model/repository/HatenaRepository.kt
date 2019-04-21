@@ -11,6 +11,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory
+import timber.log.Timber
 import java.net.UnknownServiceException
 import java.util.concurrent.TimeUnit
 
@@ -65,14 +66,18 @@ class HatenaRepository  {
         service.getHotentryArticle(category).enqueue(object : Callback<HatenaRssObject> {
             override fun onResponse(call: Call<HatenaRssObject>, response: Response<HatenaRssObject>) {
                 if (response.isSuccessful) {
-                    hatenaRssObject.postValue(response.body() as HatenaRssObject)
+                    val tmpHatenaRssObject = response.body() as HatenaRssObject
+                    tmpHatenaRssObject.status = true
+                    hatenaRssObject.postValue(tmpHatenaRssObject)
                 } else {
-                    throw UnknownServiceException("${response.code()}: response is failure")
+                    Timber.e("${response.code()}: response is failure")
+                    hatenaRssObject.postValue(HatenaRssObject())
                 }
             }
 
             override fun onFailure(call: Call<HatenaRssObject>, t: Throwable) {
-                throw UnknownServiceException(t.message)
+                Timber.e("error: ${t.message}")
+                hatenaRssObject.postValue(HatenaRssObject())
             }
         })
     }
