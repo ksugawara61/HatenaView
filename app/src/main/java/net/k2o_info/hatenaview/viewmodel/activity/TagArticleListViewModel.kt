@@ -1,4 +1,4 @@
-package net.k2o_info.hatenaview.viewmodel.fragment
+package net.k2o_info.hatenaview.viewmodel.activity
 
 import android.app.Application
 import android.arch.lifecycle.*
@@ -7,19 +7,17 @@ import net.k2o_info.hatenaview.Constant
 import net.k2o_info.hatenaview.model.repository.HatenaRepository
 import net.k2o_info.hatenaview.viewmodel.dto.ArticleDto
 import net.k2o_info.hatenaview.viewmodel.translator.ArticleTranslator
-import timber.log.Timber
-import java.net.UnknownServiceException
 import java.text.SimpleDateFormat
 import java.util.*
 
 /**
- * ArticleListFragment用ViewModel
+ * TagArticleListActivity用ViewModel
  *
  * @author katsuya
  * @since 1.0.0
  */
-class ArticleListViewModel(application: Application, private val repository: HatenaRepository,
-                           private val category: String) : AndroidViewModel(application) {
+class TagArticleListViewModel(application: Application, private val repository: HatenaRepository,
+                              private val tag: String) : AndroidViewModel(application) {
 
     private val status: MutableLiveData<Boolean> = MutableLiveData()
     private val list: MutableLiveData<List<ArticleDto>> = MutableLiveData()
@@ -43,7 +41,7 @@ class ArticleListViewModel(application: Application, private val repository: Hat
      * @return データリスト
      */
     fun subscribeList(owner: LifecycleOwner): LiveData<List<ArticleDto>> {
-        repository.getHotentryArticle(category).observe(owner, Observer {
+        repository.getTagArticle(tag).observe(owner, Observer {
             if (it != null && it.status) {
                 val hatenaArticleObjectList = it.itemList ?: emptyList()
                 val articleDtoList = ArticleTranslator.translateHatenaArticleListToArticleList(hatenaArticleObjectList)
@@ -61,14 +59,14 @@ class ArticleListViewModel(application: Application, private val repository: Hat
      * データリストのリフレッシュ処理を行う
      */
     fun refreshList() {
-        repository.updateHotentryArticle(category)
+        repository.updateTagArticle(tag)
     }
 
-    class ArticleListFactory(private val application: Application, private val repository: HatenaRepository,
-                             private val category: String): ViewModelProvider.NewInstanceFactory() {
+    class TagArticleListFactory(private val application: Application, private val repository: HatenaRepository,
+                             private val tag: String): ViewModelProvider.NewInstanceFactory() {
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return ArticleListViewModel(application, repository, category) as T
+            return TagArticleListViewModel(application, repository, tag) as T
         }
 
     }
