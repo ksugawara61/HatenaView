@@ -17,6 +17,7 @@ import kotlin.collections.ArrayList
  */
 class MainViewModel(application: Application, private val repository: CategoryRepository): AndroidViewModel(application) {
 
+    private var selectedTabPosition = 0
     private val list: MutableLiveData<List<CategoryDto>> = MutableLiveData()
 
     /**
@@ -43,6 +44,24 @@ class MainViewModel(application: Application, private val repository: CategoryRe
         })
 
         return list
+    }
+
+    /**
+     * 選択されているタブの位置を取得
+     *
+     * @return タブの位置
+     */
+    fun getSelectedTabPosition(): Int {
+        return selectedTabPosition
+    }
+
+    /**
+     * 選択されているタブの位置を保存
+     *
+     * @param position タブの位置
+     */
+    fun setSelectedTabPosition(position: Int) {
+        selectedTabPosition = position
     }
 
     /**

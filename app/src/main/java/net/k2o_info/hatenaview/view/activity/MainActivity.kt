@@ -13,6 +13,10 @@ import net.k2o_info.hatenaview.MainApplication
 import net.k2o_info.hatenaview.model.repository.CategoryRepository
 import net.k2o_info.hatenaview.view.adapter.ArticleListPagerAdapter
 import net.k2o_info.hatenaview.viewmodel.activity.MainViewModel
+import timber.log.Timber
+import android.support.v4.view.ViewPager.OnPageChangeListener
+
+
 
 
 /**
@@ -49,9 +53,24 @@ class MainActivity : AppCompatActivity() {
         viewModel.subscribeList(this).observe(this, Observer {
             if (it != null && it.isNotEmpty()) {
                 viewPager.adapter = ArticleListPagerAdapter(fragmentManager, it)
+                viewPager.currentItem = viewModel.getSelectedTabPosition()
             }
         })
 
+        viewPager.addOnPageChangeListener(object : OnPageChangeListener {
+            override fun onPageSelected(position: Int) {
+                Timber.d("onPageSelected: ${position}")
+                viewModel.setSelectedTabPosition(position)
+            }
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                Timber.d("onPageScrolled")
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {
+                Timber.d("onPageScrollStateChanged")
+            }
+        })
     }
 
 }
