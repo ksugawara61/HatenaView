@@ -4,8 +4,11 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.databinding.DataBindingUtil
+import android.net.Uri
 import android.os.Bundle
+import android.support.customtabs.CustomTabsIntent
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -17,6 +20,7 @@ import net.k2o_info.hatenaview.R
 import net.k2o_info.hatenaview.databinding.FragmentArticleListBinding
 import net.k2o_info.hatenaview.model.repository.HatenaRepository
 import net.k2o_info.hatenaview.view.adapter.ArticleRecyclerAdapter
+import net.k2o_info.hatenaview.viewmodel.dto.ArticleDto
 import net.k2o_info.hatenaview.viewmodel.fragment.ArticleListViewModel
 import timber.log.Timber
 
@@ -26,7 +30,7 @@ import timber.log.Timber
  * @author katsuya
  * @since 1.0.0
  */
-class ArticleListFragment : Fragment() {
+class ArticleListFragment : Fragment(), ArticleRecyclerAdapter.ArticleRecyclerListener {
 
     companion object {
 
@@ -72,7 +76,7 @@ class ArticleListFragment : Fragment() {
         val linearLayoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = linearLayoutManager
 
-        recyclerAdapter = ArticleRecyclerAdapter(context!!)
+        recyclerAdapter = ArticleRecyclerAdapter(context!!, this)
         recyclerView.adapter = recyclerAdapter
 
         // カテゴリを取得
@@ -111,6 +115,22 @@ class ArticleListFragment : Fragment() {
             }
             swipeRefreshLayout.isRefreshing = false
         })
+    }
+
+    /**
+     * 要素のクリック時に呼ばれる
+     *
+     * @param view ビュー
+     * @param article クリックした記事
+     * @param position 記事の位置
+     */
+    override fun onClickedListener(view: View, article: ArticleDto, position: Int) {
+        val url = article.link
+        val tabsIntent = CustomTabsIntent.Builder()
+            .setShowTitle(true)
+            .setToolbarColor(ContextCompat.getColor(view.context, R.color.colorPrimary))
+            .build()
+        tabsIntent.launchUrl(view.context, Uri.parse(url))
     }
 
 }
