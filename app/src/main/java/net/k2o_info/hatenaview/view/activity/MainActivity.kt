@@ -1,5 +1,6 @@
 package net.k2o_info.hatenaview.view.activity
 
+import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -7,10 +8,11 @@ import net.k2o_info.hatenaview.databinding.ActivityMainBinding
 import net.k2o_info.hatenaview.R
 import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
+import android.arch.lifecycle.Observer
+import net.k2o_info.hatenaview.MainApplication
+import net.k2o_info.hatenaview.model.repository.CategoryRepository
 import net.k2o_info.hatenaview.view.adapter.ArticleListPagerAdapter
-import net.k2o_info.hatenaview.viewmodel.dto.CategoryDto
-import java.util.*
-import kotlin.collections.ArrayList
+import net.k2o_info.hatenaview.viewmodel.activity.MainViewModel
 
 
 /**
@@ -37,23 +39,19 @@ class MainActivity : AppCompatActivity() {
         val tabLayout: TabLayout = binding.tabLayout
         tabLayout.setupWithViewPager(viewPager)
 
-        // TODO: タイトルリストの取得処理を制御
-        val categoryList = ArrayList<CategoryDto>(
-            Arrays.asList(
-                CategoryDto("総合", "all"),
-                CategoryDto("一般", "general"),
-                CategoryDto("世の中", "social"),
-                CategoryDto("政治と経済", "economics"),
-                CategoryDto("暮らし", "life"),
-                CategoryDto("学び", "knowledge"),
-                CategoryDto("テクノロジー", "it"),
-                CategoryDto("おもしろ", "fun"),
-                CategoryDto("エンタメ", "entertainment"),
-                CategoryDto("アニメとゲーム", "game")
-            )
-        )
         val fragmentManager = supportFragmentManager
-        viewPager.adapter = ArticleListPagerAdapter(fragmentManager, categoryList)
+
+        // ViewModelの設定
+        val viewModel = ViewModelProviders
+            .of(this, MainViewModel.MainFactory(this.application, CategoryRepository(MainApplication.database)))
+            .get(MainViewModel::class.java)
+
+        viewModel.subscribeList(this).observe(this, Observer {
+            if (it != null && it.isNotEmpty()) {
+                viewPager.adapter = ArticleListPagerAdapter(fragmentManager, it)
+            }
+        })
+
     }
 
 }
