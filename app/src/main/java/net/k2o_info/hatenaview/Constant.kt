@@ -18,7 +18,7 @@ object Constant {
 
     const val OKHTTP_TIMEOUT: Long = 10
 
-    const val HATENA_BASE_URL = "http://b.hatena.ne.jp"
+    const val HATENA_BASE_URL = "https://b.hatena.ne.jp"
 
     const val KEY_TAG_QUERY = "tagQuery"
 }
